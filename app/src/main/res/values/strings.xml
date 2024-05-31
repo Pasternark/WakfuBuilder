@@ -2,12 +2,12 @@
     <string name="app_name">Wakfu Builder</string>
     <string name="buscar">Buscar</string>
     <string name="filtrarPor">Filtrar por…</string>
-    <string name="crearBuild">Crear nueva build</string>
+    <string name="crearBuild">Nueva</string>
     <string name="nuevaBuild">Nueva build</string>
     <string name="guardar">Guardar</string>
     <string name="favoritos">Favoritos</string>
     <string name="ajustes">Ajustes</string>
     <string name="buttonAcceder">Acceder</string>
-    <string name="main">¡Bienvenido!</string>
+    <string name="bienvenida">¡Bienvenido!</string>
 
 </resources>
