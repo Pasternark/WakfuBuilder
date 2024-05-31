@@ -6,12 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -20,6 +24,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,6 +42,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.ContentScale.Companion.Crop
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -49,8 +56,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.wakfubuilder.data.DataSourceBuilds
 import com.example.wakfubuilder.model.BottomNavItem
+import com.example.wakfubuilder.model.Builds
 import com.example.wakfubuilder.ui.theme.WakfuBuilderTheme
+
 
 
 class MainActivity : ComponentActivity() {
@@ -71,7 +81,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WakfuBuilder() {
     val navController = rememberNavController()
@@ -114,7 +123,7 @@ fun WakfuLogin(navController: NavHostController) {
         Image(
             painter = painterResource(id = R.drawable.wakfubuilderlogo),
             contentDescription = "Wakfu Builder Logo",
-            contentScale = ContentScale.Crop,
+            contentScale = Crop,
             modifier = Modifier
                 .height(350.dp)
                 .width(300.dp)
@@ -182,11 +191,14 @@ fun WakfuInicio(navController: NavHostController) {
                 )
             )
         }
-    ) { it ->
+    ) {
         LazyColumn(contentPadding = it) {
 
         }
     }
+    BuildsList(
+        buildList = DataSourceBuilds().loadBuilds()
+    )
     Column(
         modifier = Modifier
             .padding(bottom = 20.dp)
@@ -214,49 +226,71 @@ fun WakfuInicio(navController: NavHostController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BuildsList(buildList: List<Builds>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
+        items(buildList) {builds ->
+            BuildsCard(builds = builds,
+                modifier = Modifier.padding(8.dp))
+        }
+    }
+}
+
+@Composable
+fun BuildsCard(builds: Builds, modifier: Modifier = Modifier) {
+    Card (modifier = modifier){
+        Row (modifier = Modifier){
+            Image(painter = painterResource(builds.imageResourceId),
+                contentDescription = "",
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(600.dp),
+                contentScale = Crop
+            )
+            Text(text = "holaaaaaaaa")
+        }
+    }
+}
+
 @Composable
 fun WakfuFavoritos(navController: NavHostController) {
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.favoritos))
         }
-    ) { it ->
+    ) {
         LazyColumn(contentPadding = it) {
 
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WakfuCreacion(navController: NavHostController) {
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.crearBuild))
         }
-    ) { it ->
+    ) {
         LazyColumn(contentPadding = it) {
 
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WakfuAjustes(navController: NavHostController) {
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.ajustes))
         }
-    ) { it ->
+    ) {
         LazyColumn(contentPadding = it) {
 
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WakfuBusqueda(navController: NavHostController) {
 
@@ -264,7 +298,7 @@ fun WakfuBusqueda(navController: NavHostController) {
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.buscar))
         }
-    ) { it ->
+    ) {
         LazyColumn(contentPadding = it) {
 
         }
@@ -326,11 +360,6 @@ fun WakfuTopBar(navController: NavHostController, stringResource: String) {
             actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     )
-}
-
-@Composable
-fun AccederInicio() {
-
 }
 
 @Preview

@@ -10,4 +10,33 @@
     <string name="buttonAcceder">Acceder</string>
     <string name="bienvenida">¡Bienvenido!</string>
 
+    //strings recursos clases
+    <string name="clase1">Clase 1</string>
+    <string name="clase2">Clase 2</string>
+    <string name="clase3">Clase 3</string>
+
+    //strings recursos cascos
+    <string name="casco1">Casco 1</string>
+    <string name="casco2">Casco 2</string>
+    <string name="casco3">Casco 3</string>
+
+    //strings recursos corazas
+    <string name="corazas1">Coraza 1</string>
+    <string name="corazas2">Coraza 2</string>
+    <string name="corazas3">Coraza 3</string>
+
+    //strings recursos cinturones
+    <string name="cinturon1">Cinturon 1</string>
+    <string name="cinturon2">Cinturon 2</string>
+    <string name="cinturon3">Cinturon 3</string>
+
+    //strings recursos amuletos
+    <string name="amuleto1">Amuleto 1</string>
+    <string name="amuleto2">Amuleto 2</string>
+    <string name="amuleto3">Amuleto 3</string>
+
+    //strings recursos botas
+    <string name="bota1">Bota 1</string>
+    <string name="bota2">Bota 2</string>
+    <string name="bota3">Bota 3</string>
 </resources>
