@@ -39,4 +39,5 @@
     <string name="bota1">Bota 1</string>
     <string name="bota2">Bota 2</string>
     <string name="bota3">Bota 3</string>
+    <string name="guardarBuild">Guardar</string>
 </resources>

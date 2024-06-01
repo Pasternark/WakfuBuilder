@@ -49,3 +49,7 @@ data class Botas(
     @StringRes val stringResourceId: Int,
     @DrawableRes val imageResourceId: Int,
 )
+
+data class Favoritos(
+    @StringRes val stringResourceId: Int
+)
