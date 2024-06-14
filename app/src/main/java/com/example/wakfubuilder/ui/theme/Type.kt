@@ -2,11 +2,18 @@ package com.example.wakfubuilder.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.wakfubuilder.R
-import androidx.compose.ui.text.font.Font
+
+val alfaSlab = FontFamily(
+    Font(R.font.alfa_slab_one_regular)
+)
+val jaroRegular = FontFamily(
+    Font(R.font.jaro_regular)
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -16,6 +23,15 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = alfaSlab,
+        fontWeight = FontWeight.Normal,
+        fontSize = 25.sp
+    ),
+    displayLarge = TextStyle(
+        fontFamily = jaroRegular,
+        fontSize = 22.sp
     )
 
 
@@ -35,7 +51,4 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
-)
-val AlfaSlabOne = FontFamily(
-    Font(R.font.alfa_slab_one_regular)
 )

@@ -11,12 +11,14 @@ data class BottomNavItem(
 
 data class Builds(
     val nombreBuild: String,
+    val nombreClase: String,
     @DrawableRes val imageResourceId: Int,
     val casco1: Int,
     val coraza1: Int,
     val cinturon1: Int,
     val amuleto1: Int,
-    val bota1: Int
+    val bota1: Int,
+    var favorito: Boolean
 
 )
 

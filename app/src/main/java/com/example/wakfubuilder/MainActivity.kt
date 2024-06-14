@@ -1,6 +1,7 @@
 package com.example.wakfubuilder
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -15,28 +16,32 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -81,6 +87,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+var buildsMain = Datasource().loadBuilds()
+
 
 /*
 Función para iniciar el NavHost y el bottom bar
@@ -123,7 +132,7 @@ fun WakfuBuilder() {
 }
 
 /*
-Función para la pantalla de inicio
+Función para la pantalla de login
  */
 @Composable
 fun WakfuLogin(navController: NavHostController) {
@@ -144,7 +153,7 @@ fun WakfuLogin(navController: NavHostController) {
                 .padding(horizontal = 20.dp)
         )
         Text( //Muestra un text de bienvenida
-            text = "¡Bienvenido!",
+            text = stringResource(R.string.bienvenido),
             modifier = Modifier
                 .padding(bottom = 20.dp),
             fontFamily = FontFamily.Monospace,
@@ -177,6 +186,7 @@ Función para la pantalla inicio
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WakfuInicio(navController: NavHostController) {
+    val contextForToast = LocalContext.current.applicationContext
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -185,10 +195,12 @@ fun WakfuInicio(navController: NavHostController) {
 
                     Text( //Text para mostrar el título de la pantalla inicio
                         text = stringResource(R.string.app_name),
-                        modifier = Modifier,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp
+                        style = MaterialTheme.typography.displayMedium
+                        //modifier = Modifier,
+                        //fontFamily = FontFamily.Monospace,
+                        //fontWeight = FontWeight.Bold,
+
+                        //fontSize = 25.sp
                     )
 
                 },
@@ -217,9 +229,7 @@ fun WakfuInicio(navController: NavHostController) {
         }
     }
     //llama a la función BuildList, la cual contiene los datos a mostrar en inicio
-    BuildsList(
-        buildList = Datasource().loadBuilds()
-    )
+    BuildsList()
     Column(
         modifier = Modifier
             .padding(bottom = 20.dp)
@@ -235,7 +245,13 @@ fun WakfuInicio(navController: NavHostController) {
             ),
 
             onClick = { //navigate con la ruta a la pantalla de creación
-                navController.navigate("Crear")
+                Toast.makeText(
+                    contextForToast,
+                    "Todos los caminos llevan a Roma, menos este.",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // navController.navigate("Crear")
             }) {
             Text(
                 text = stringResource(R.string.crearBuild),
@@ -251,9 +267,9 @@ fun WakfuInicio(navController: NavHostController) {
 Función para añadir los datos de la lista builds a una lazycolumn y a la card
  */
 @Composable
-fun BuildsList(buildList: List<Builds>, modifier: Modifier = Modifier) {
+fun BuildsList(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier.padding(top = 65.dp)) {
-        items(buildList) { builds ->
+        items(buildsMain) { builds ->
             BuildsCard(
                 builds = builds,
                 modifier = Modifier.padding(8.dp)
@@ -266,82 +282,166 @@ fun BuildsList(buildList: List<Builds>, modifier: Modifier = Modifier) {
 función para mostrar la card con contenido de la lista Builds
  */
 @Composable
-fun BuildsCard(builds: Builds, modifier: Modifier = Modifier) {
+fun BuildsCard(modifier: Modifier = Modifier, builds: Builds) {
+    val contextForToast = LocalContext.current.applicationContext
+    remember { mutableStateOf(buildsMain) }
     Card(
         modifier = modifier
-            .padding(horizontal = 20.dp)
-            .height(150.dp)
-            .fillMaxWidth()
-    ) {
+            .padding(horizontal = 10.dp)
+            .height(300.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {//inicio del body de la card
         Row {
-            Text(
-                text = builds.nombreBuild,
-                modifier = modifier
-                    .padding(start = 8.dp),
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
-            )
-
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
             Image(
                 painter = painterResource(builds.imageResourceId),
                 contentDescription = "",
                 modifier = modifier
-                    .height(60.dp)
-                    .width(60.dp),
+                    .height(80.dp)
+                    .width(80.dp),
                 contentScale = Crop
             )
+            Column(
+                Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth(),
+            ) {
+                Text(
+                    text = builds.nombreBuild,
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier
 
-            Image(
-                painter = painterResource(builds.casco1),
-                contentDescription = "",
-                modifier = modifier
-                    .height(45.dp)
-                    .width(45.dp)
-            )
-            Image(
-                painter = painterResource(builds.coraza1),
-                contentDescription = "",
-                modifier = modifier
-                    .height(45.dp)
-                    .width(45.dp)
-            )
-            Image(
-                painter = painterResource(builds.cinturon1),
-                contentDescription = "",
-                modifier = modifier
-                    .height(45.dp)
-                    .width(45.dp)
-            )
-            Image(
-                painter = painterResource(builds.amuleto1),
-                contentDescription = "",
-                modifier = modifier
-                    .height(45.dp)
-                    .width(45.dp)
-            )
-            Image(
-                painter = painterResource(builds.bota1),
-                contentDescription = "",
-                modifier = modifier
-                    .height(45.dp)
-                    .width(45.dp)
-            )
+                        .padding(top = 8.dp),
+                )
+                Text(
+                    text = builds.nombreClase,
+                    modifier = Modifier
+
+                        .padding(top = 8.dp),
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+            }
+
         }
-    }
+
+
+        Row(
+            modifier = Modifier
+                .height(145.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Column {
+                Image(
+                    painter = painterResource(builds.casco1),
+                    contentDescription = "",
+                    modifier = modifier
+                        .height(55.dp)
+                        .width(55.dp)
+                )
+                Image(
+                    painter = painterResource(builds.coraza1),
+                    contentDescription = "",
+                    modifier = modifier
+                        .height(55.dp)
+                        .width(55.dp)
+                )
+            }
+            Column {
+                Image(
+                    painter = painterResource(builds.cinturon1),
+                    contentDescription = "",
+                    modifier = modifier
+                        .height(55.dp)
+                        .width(55.dp)
+                )
+                Image(
+                    painter = painterResource(builds.amuleto1),
+                    contentDescription = "",
+                    modifier = modifier
+                        .height(55.dp)
+                        .width(55.dp)
+                )
+            }
+            Column {
+                Image(
+                    painter = painterResource(builds.bota1),
+                    contentDescription = "",
+                    modifier = modifier
+                        .height(55.dp)
+                        .width(55.dp)
+                )
+
+            }
+
+        }
+        Row(
+            modifier = Modifier
+                .padding(5.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(modifier = modifier, onClick = {
+
+                //Toast.makeText(contextForToast, "¡Eliminado con exito!", Toast.LENGTH_SHORT).show()
+            }) {
+                Icon(// sin uso
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete item"
+                )
+            }
+            IconButton(modifier = modifier
+                .padding(horizontal = 5.dp), onClick = {
+                //si el elemento favorito de la card es favorito y se pulsa el icono, cambia de true a false
+                if (builds.favorito) {
+                    builds.favorito = false
+
+                    Toast.makeText( //toast que muestra cuando se elimina un nuevo elemento a favoritos
+                        contextForToast,
+                        "¡Eliminado de favoritos!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else { //si el elemento no era favorito, se marca como tal
+                    builds.favorito = true
+                    //toast que muestra cuando se añade un elemento a favoritos
+                    Toast.makeText(contextForToast, "¡Añadido a favoritos!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }) {
+                //si el elemento está marcado como favorito (true), muestra el icono de favoritos relleno
+                if (builds.favorito) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Favorito"
+                    )
+                } else {//si el elemento no está marcado como favorito, muestra un icono sin relleno
+                    Icon(
+
+                        imageVector = Icons.Default.FavoriteBorder,
+                        contentDescription = "No Favorito"
+                    )
+                }
+
+            }//fin de iconButton
+        }//fin del segundo row
+    } //fin de la card
+
 }
 
 /*
 Función para la pantalla de favoritos
  */
 @Composable
-fun WakfuFavoritos(navController: NavHostController) {
+fun WakfuFavoritos(navController: NavHostController, modifier: Modifier = Modifier) {
+    //variable que almacena una nueva lista en base a la lista de builds, aplicando un filtro
+    //si la variable favorito = true, entonces la añade
+    val buildsFavoritas = buildsMain.filter { it.favorito }
+
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.favoritos))
@@ -350,34 +450,41 @@ fun WakfuFavoritos(navController: NavHostController) {
         LazyColumn(contentPadding = it) {
 
         }
+
     }
+    //se muestra una lista de cards con los elementos favoritos
+    LazyColumn(modifier = modifier.padding(top = 65.dp)) {
+        items(buildsFavoritas) { builds ->
+            BuildsCard(
+                builds = builds,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+
 }
 
+
 /*
-Función para la pantalla de creación
+Función para la pantalla de creación, triste pero no se alcanzó a implementar...
  */
 @Composable
 fun WakfuCreacion(navController: NavHostController) {
-
-    var showMenu by remember {
-        mutableStateOf(false)
+    remember {
+        mutableStateOf(buildsMain)
     }
+
+
+    LocalContext.current.applicationContext
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.nuevaBuild))
         }
     ) {
         LazyColumn(contentPadding = it) {
-
         }
-        DropdownMenu(expanded = showMenu, onDismissRequest = {
-            showMenu = false
-        }) {
-            DropdownMenuItem(
-                text = { /*TODO*/ }, onClick = {
 
-                })
-        }
+
         Column(
             modifier = Modifier
                 .padding(bottom = 20.dp)
@@ -393,7 +500,6 @@ fun WakfuCreacion(navController: NavHostController) {
                 ),
 
                 onClick = {
-
                 }) {
                 Text(
                     text = stringResource(R.string.guardarBuild),
@@ -407,10 +513,12 @@ fun WakfuCreacion(navController: NavHostController) {
 }
 
 /*
-función para la pantalla de Ajustes
+función para la pantalla de Ajustes, tampoco funciona...
  */
 @Composable
 fun WakfuAjustes(navController: NavHostController) {
+    var expanded by remember { mutableStateOf(false) }
+    LocalContext.current.applicationContext
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.ajustes))
@@ -420,6 +528,34 @@ fun WakfuAjustes(navController: NavHostController) {
 
         }
     }
+    Row(
+        modifier = Modifier
+            .padding(top = 65.dp)
+            .padding(horizontal = 30.dp),
+    ) {
+        Text(
+            text = "Idioma de la app",
+            fontFamily = FontFamily.Monospace,
+            fontSize = 25.sp,
+            modifier = Modifier
+                .padding(15.dp)
+        )
+        IconButton(
+            onClick = {
+                expanded = true
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Place,
+                contentDescription = "Open Menu"
+            )
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                //DropdownMenuItem(text = { "Español" }, onClick = {expanded = false})
+                //DropdownMenuItem(text = { "Inglés" }, onClick = {expanded = false})
+            }
+        }
+
+    }
 }
 
 /*
@@ -427,21 +563,11 @@ función para la pantalla de busqueda
  */
 @Composable
 fun WakfuBusqueda(navController: NavHostController) {
-    var query by remember {
+    var valueInput by remember {
         mutableStateOf("")
     }
-    val resultado = remember {
-        mutableStateOf(listOf<Any>())
-    }
-    TextField(
-        value = query,
-        onValueChange = {
-            query = it
-
-        },
-        label = { Text("Buscar por") },
-        modifier = Modifier.fillMaxWidth()
-    )
+    // val results = remember { mutableStateOf(listOf<Builds>()) }
+    val resultados = remember { mutableStateOf(buildsMain) } //crea una lista mutable de buildsMain
     Scaffold(
         topBar = {
             WakfuTopBar(navController = navController, stringResource(id = R.string.buscar))
@@ -449,7 +575,46 @@ fun WakfuBusqueda(navController: NavHostController) {
     ) {
 
         LazyColumn(contentPadding = it) {
-            items(resultado.value) {}
+
+        }
+    }
+    Column(
+        modifier = Modifier
+            .padding(top = 85.dp)
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .width(365.dp),
+            value = valueInput, onValueChange = {
+                valueInput = it
+                //aquí debía implementarse la busqueda desde la lista mutable creada arriba
+                //no alcancé a implementarlo así que la lee directo de la Datasource
+                //así que al buscar un elemento, se siguen mostrando favoritos así no los haya
+                //aunque no repercute en el resto de las listas mutables ni funciones
+                resultados.value = Datasource().search(valueInput)
+            },
+            enabled = true,
+            label = {
+                Text(
+                    text = stringResource(R.string.busqueda_por_nombre)
+                )
+            },
+            keyboardActions = KeyboardActions(onDone = { }),
+            singleLine = true
+        )
+
+
+    }
+    val modifier = Modifier
+    LazyColumn(modifier = modifier.padding(top = 155.dp)) {
+        items(resultados.value) { builds ->
+            BuildsCard(
+                builds = builds,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }
@@ -461,9 +626,9 @@ Función para definir la barra de navegación inferior
 fun BottomNavigationBar(navController: NavHostController) {
     //Lista para almacenar los iconos navegables en una lista con model
     val itemsBarNavigation = listOf(
-        BottomNavItem("Inicio", Icons.Default.Home, "Inicio"),
-        BottomNavItem("Favoritos", Icons.Default.Favorite, "Favoritos"),
-        BottomNavItem("Buscar", Icons.Default.Search, "Buscar")
+        BottomNavItem("Inicio", Icons.Default.Home, stringResource(R.string.inicio_icon)),
+        BottomNavItem("Favoritos", Icons.Default.Favorite, stringResource(R.string.favoritos_icon)),
+        BottomNavItem("Buscar", Icons.Default.Search, stringResource(R.string.buscar_icon))
     )
     NavigationBar {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -491,10 +656,7 @@ fun WakfuTopBar(navController: NavHostController, stringResource: String) {
         title = {
             Text(
                 text = stringResource,
-                modifier = Modifier,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp
+                style = MaterialTheme.typography.displayMedium
             )
         },
         navigationIcon = {
@@ -516,6 +678,7 @@ fun WakfuTopBar(navController: NavHostController, stringResource: String) {
         )
     )
 }
+
 
 /*
 Función para el preview de la clase MainActivity a través de la función LoginPreview(

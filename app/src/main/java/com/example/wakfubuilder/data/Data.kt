@@ -13,21 +13,33 @@ import com.example.wakfubuilder.model.Favoritos
 class Datasource() {
     fun loadBuilds(): List<Builds> {
         return mutableListOf<Builds>(
-        Builds("Zurcarák de críticos", R.drawable.clase1,
+        Builds("Zurcarák de críticos", "Zurcarák",R.drawable.clase1,
             R.drawable.casco1, R.drawable.coraza1, R.drawable.cinturon1,
-            R.drawable.amuleto1, R.drawable.bota1),
-        Builds("Anutrof de melé", R.drawable.clase2,
+            R.drawable.amuleto1, R.drawable.bota1, favorito = true),
+        Builds("Anutrof de melé","Anutrof", R.drawable.clase2,
             R.drawable.casco2, R.drawable.coraza2, R.drawable.cinturon2,
-            R.drawable.amuleto2, R.drawable.bota2),
-        Builds("Feca de escudos", R.drawable.clase3,
+            R.drawable.amuleto2, R.drawable.bota2, favorito = false),
+        Builds("Feca de escudos","Feca", R.drawable.clase3,
             R.drawable.casco3, R.drawable.coraza3, R.drawable.cinturon3,
-            R.drawable.amuleto3, R.drawable.bota3),
-        Builds("Zurcarák de melé", R.drawable.clase1,
+            R.drawable.amuleto3, R.drawable.bota3, favorito = true),
+        Builds("Zurcarák de melé","Zurcarák", R.drawable.clase1,
             R.drawable.casco1, R.drawable.coraza2, R.drawable.cinturon3,
-            R.drawable.amuleto1, R.drawable.bota2),
-        Builds("Anutrof de drop", R.drawable.clase2,
+            R.drawable.amuleto1, R.drawable.bota2, favorito = false),
+        Builds("Anutrof de drop","Anutrof", R.drawable.clase2,
             R.drawable.casco3, R.drawable.coraza1, R.drawable.cinturon2,
-            R.drawable.amuleto3, R.drawable.bota1))
+            R.drawable.amuleto3, R.drawable.bota1, favorito = false))
+    }
+
+    fun search(query: String): List<Builds> {
+        //val buildPorNombre = loadBuilds()
+        val result = mutableListOf<Builds>()
+        result.addAll(loadBuilds().filter { it.nombreBuild.contains(query, ignoreCase = true) })
+        return result
+    }
+
+    fun isFavorite(){
+        var favorites = mutableListOf<Builds>()
+        favorites.addAll(loadBuilds().filter { it.favorito })
     }
 
     fun loadClases(): List<Clases> {
@@ -78,3 +90,5 @@ class Datasource() {
         )
     }
 }
+
+

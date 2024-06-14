@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wakfu Builder</string>
+    <string name="filtrarPor">Filter...</string>
+    <string name="crearBuild">New</string>
+    <string name="nuevaBuild">New Build</string>
+    <string name="guardar">Save</string>
+    <string name="favoritos">Favorites</string>
+    <string name="ajustes">Settings</string>
+    <string name="buttonAcceder">Log in</string>
+    <string name="bienvenida">Welcome!</string>
+    <string name="clase1">Class 1</string>
+    <string name="clase2">Class 2</string>
+    <string name="clase3">Class 3</string>
+    <string name="casco1">Helmet 1</string>
+    <string name="casco2">Helmet 2</string>
+    <string name="casco3">Helmet 3</string>
+    <string name="corazas1">Gear 1</string>
+    <string name="corazas2">Gear 2</string>
+    <string name="corazas3">Gear 3</string>
+    <string name="cinturon1">Belt 1</string>
+    <string name="cinturon2">Belt 2</string>
+    <string name="cinturon3">Belt 3</string>
+    <string name="amuleto1">Amulet 1</string>
+    <string name="amuleto2">Amulet 2</string>
+    <string name="amuleto3">Amulet 3</string>
+    <string name="bota1">Boots 1</string>
+    <string name="bota2">Boots 2</string>
+    <string name="bota3">Boots 3</string>
+    <string name="guardarBuild">Save</string>
+    <string name="buscar">Search</string>
+    <string name="bienvenido">Welcome!</string>
+    <string name="busqueda_por_nombre">Search by name</string>
+    <string name="favoritos_icon">Favorites</string>
+    <string name="buscar_icon">Search</string>
+    <string name="inicio_icon">Home</string>
+</resources>

@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wakfu Builder</string>
-    <string name="filtrarPor">Filtrar por…</string>
     <string name="crearBuild">Nueva</string>
     <string name="nuevaBuild">Nueva build</string>
     <string name="guardar">Guardar</string>
@@ -8,41 +8,30 @@
     <string name="ajustes">Ajustes</string>
     <string name="buttonAcceder">Acceder</string>
     <string name="bienvenida">¡Bienvenido!</string>
-
-    //strings recursos clases
     <string name="clase1">Clase 1</string>
-    <string name="clase2">Clase 2</string>
-    <string name="clase3">Clase 3</string>
-
-    //strings recursos cascos
+    <string name="clase2">Clase 1</string>
+    <string name="clase3">Clase 1</string>
     <string name="casco1">Casco 1</string>
-    <string name="casco2">Casco 2</string>
-    <string name="casco3">Casco 3</string>
-
-    //strings recursos corazas
+    <string name="casco2">Casco 1</string>
+    <string name="casco3">Casco 1</string>
     <string name="corazas1">Coraza 1</string>
     <string name="corazas2">Coraza 2</string>
     <string name="corazas3">Coraza 3</string>
-
-    //strings recursos cinturones
     <string name="cinturon1">Cinturon 1</string>
     <string name="cinturon2">Cinturon 2</string>
     <string name="cinturon3">Cinturon 3</string>
-
-    //strings recursos amuletos
     <string name="amuleto1">Amuleto 1</string>
     <string name="amuleto2">Amuleto 2</string>
     <string name="amuleto3">Amuleto 3</string>
-
-    //strings recursos botas
     <string name="bota1">Bota 1</string>
     <string name="bota2">Bota 2</string>
     <string name="bota3">Bota 3</string>
     <string name="guardarBuild">Guardar</string>
     <string name="buscar">Buscar</string>
+    <string name="filtrarPor">Filtrar</string>
     <string name="bienvenido">¡Bienvenido!</string>
     <string name="busqueda_por_nombre">Busqueda por nombre</string>
-    <string name="inicio_icon">Inicio</string>
     <string name="favoritos_icon">Favoritos</string>
     <string name="buscar_icon">Buscar</string>
+    <string name="inicio_icon">Inicio</string>
 </resources>
